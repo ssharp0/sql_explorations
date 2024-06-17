@@ -53,3 +53,45 @@ def generate_moons(n, planets):
         'OrbitalPeriod': orbital_periods
     })
     return moons
+
+
+# Function to get random dates for missions
+def generate_launch_dates():
+    current_time = datetime.now()
+    duration = timedelta(days=np.random.randint(0, 365 * 50))
+    return current_time - duration
+
+
+# Function to generate random missions
+def generate_missions(n, planets, moons):
+    names = [f'Mission_{i}' for i in range(n)]
+    launch_dates = [generate_launch_dates() for _ in range(n)]
+    target_planet_ids = np.random.choice(planets.index + 1, n)
+    target_moon_ids = np.random.choice(moons.index + 1, n)
+    mission_types = ['Lunar Landing', 'Mars Exploration', 'Asteroid Study']
+    missions = pd.DataFrame({
+        'Name': names,
+        'LaunchDate': launch_dates,
+        'TargetPlanetID': target_planet_ids,
+        'TargetMoonID': target_moon_ids,
+        'MissionType': np.random.choice(mission_types, n)
+    })
+    return missions
+
+
+# Generate data
+num_star_systems = 5
+num_planets = 10
+num_moons = 20
+num_missions = 15
+
+star_systems = generate_star_systems(num_star_systems)
+planets = generate_planets(num_planets, star_systems)
+moons = generate_moons(num_moons, planets)
+missions = generate_missions(num_missions, planets, moons)
+
+# Display the data
+print("Star Systems:\n", star_systems)
+print("\nPlanets:\n", planets)
+print("\nMoons:\n", moons)
+print("\nMissions:\n", missions)
