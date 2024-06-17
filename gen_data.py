@@ -95,3 +95,18 @@ print("Star Systems:\n", star_systems)
 print("\nPlanets:\n", planets)
 print("\nMoons:\n", moons)
 print("\nMissions:\n", missions)
+
+# Visualize the data with Matplotlib
+# Example: Histogram of planet diameters
+plt.hist(planets['Diameter'], bins=10, alpha=0.75)
+plt.title('Histogram of Planet Diameters')
+plt.xlabel('Diameter')
+plt.ylabel('Frequency')
+plt.show()
+
+# Example: Scatter plot of planet mass vs. diameter
+plt.scatter(planets['Diameter'], planets['Mass'], alpha=0.75)
+plt.title('Planet Mass vs. Diameter')
+plt.xlabel('Diameter')
+plt.ylabel('Mass')
+plt.show()
