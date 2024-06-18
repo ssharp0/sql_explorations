@@ -110,3 +110,22 @@ plt.title('Planet Mass vs. Diameter')
 plt.xlabel('Diameter')
 plt.ylabel('Mass')
 plt.show()
+
+
+# Function to generate value for SQL INSERT
+def check_value(val):
+    is_str = isinstance(val, str)
+    is_date = isinstance(val, datetime)
+    is_str__or_date = True if (is_str or is_date) else False
+    return is_str__or_date
+
+
+# Function to generate SQL INSERT statements from DataFrame
+def generate_insert_stmt(df, table_name):
+    insert_statements = []
+    for row in df.itertuples(index=False):
+        values = ', '.join(
+            [f"'{str(val)}'" if check_value(val) else str(val) for val in row])
+        statement = f"INSERT INTO {table_name} VALUES ({values});"
+        insert_statements.append(statement)
+    return insert_statements
