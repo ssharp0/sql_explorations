@@ -147,3 +147,35 @@ for stmt in generate_insert_stmt(moons.reset_index(), 'Moons'):
 print("\nINSERT Statements for Missions:")
 for stmt in generate_insert_stmt(missions.reset_index(), 'Missions'):
     print(stmt)
+
+
+# Function to generate SQL INSERT statements from DataFrame
+def gen_insert_stmts(df, table_name):
+    insert_statements = []
+    for row in df.itertuples(index=False):
+        values = ', '.join(
+            [f"'{str(val)}'" if check_value(val) else str(val) for val in row]
+        )
+        statement = f"INSERT INTO {table_name} VALUES ({values});"
+        insert_statements.append(statement)
+    return insert_statements
+
+
+# Function to save SQL INSERT statements to a file
+def save_statements_to_file(statements, file_name):
+    with open(file_name, 'w') as file:
+        for statement in statements:
+            file.write(statement + '\n')
+
+
+# Generate SQL INSERT statements
+star_systems_stmts = gen_insert_stmts(star_systems.reset_index(), 'StarSystems')
+planets_stmts = gen_insert_stmts(planets.reset_index(), 'Planets')
+moons_stmts = gen_insert_stmts(moons.reset_index(), 'Moons')
+missions_stmts = gen_insert_stmts(missions.reset_index(), 'Missions')
+
+# Combine all statements
+all_stmts = star_systems_stmts + planets_stmts + moons_stmts + missions_stmts
+
+# Save to .sql file
+save_statements_to_file(all_stmts, 'random_data.sql')
