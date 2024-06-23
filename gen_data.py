@@ -203,3 +203,41 @@ def print_select_statements():
 
 # Call the function to print the SELECT statements
 print_select_statements()
+
+
+# Function to get the table name
+def get_table_name():
+    table_name = input("Enter the table name: ")
+    return table_name
+
+
+# Function to get the table fields
+def get_fields():
+    fields = []
+    while True:
+        field_name = input("Enter the field name (or type 'done' to finish): ")
+        if field_name.lower() == 'done':
+            break
+        field_type = input(f"Enter the data type for {field_name}: ")
+        fields.append((field_name, field_type))
+    return fields
+
+
+# Function to create the table statement
+def create_table_statement(table_name, fields):
+    field_definitions = ",\n    ".join([f"{name} {data_type}" for name, data_type in fields])
+    create_statement = f"CREATE TABLE {table_name} (\n    {field_definitions}\n);"
+    return create_statement
+
+
+# Function to start process
+def interactive_table_creation():
+    table_name = get_table_name()
+    fields = get_fields()
+    create_statement = create_table_statement(table_name, fields)
+    print("\nSQL CREATE TABLE statement:")
+    print(create_statement)
+
+
+# Call the function to start the interactive table creation
+interactive_table_creation()
