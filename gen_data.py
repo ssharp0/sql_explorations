@@ -185,3 +185,21 @@ all_stmts = star_systems_stmts + planets_stmts + moons_stmts + missions_stmts
 
 # Save to .sql file
 save_statements_to_file(all_stmts, 'random_data.sql')
+
+
+# Function to generate SELECT statements for a table
+def generate_select_statement(table_name):
+    return f"SELECT * FROM {table_name};"
+
+
+# Function to print the SELECT statements for each table
+def print_select_statements():
+    tables = ['StarSystems', 'Planets', 'Moons', 'Missions']
+    print("\n")
+    for table in tables:
+        select_statement = generate_select_statement(table)
+        print(f"SELECT statement for {table}:\n{select_statement}\n")
+
+
+# Call the function to print the SELECT statements
+print_select_statements()
