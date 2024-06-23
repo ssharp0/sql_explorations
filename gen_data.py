@@ -131,22 +131,28 @@ def generate_insert_stmt(df, table_name):
     return insert_statements
 
 
-# Generate and print INSERT statements
-print("\nINSERT Statements for StarSystems:")
-for stmt in generate_insert_stmt(star_systems.reset_index(), 'StarSystems'):
-    print(stmt)
+# Function to print insert statements
+def print_stmts():
+    # Generate and print INSERT statements
+    print("\nINSERT Statements for StarSystems:")
+    for stmt in generate_insert_stmt(star_systems.reset_index(), 'StarSystems'):
+        print(stmt)
 
-print("\nINSERT Statements for Planets:")
-for stmt in generate_insert_stmt(planets.reset_index(), 'Planets'):
-    print(stmt)
+    print("\nINSERT Statements for Planets:")
+    for stmt in generate_insert_stmt(planets.reset_index(), 'Planets'):
+        print(stmt)
 
-print("\nINSERT Statements for Moons:")
-for stmt in generate_insert_stmt(moons.reset_index(), 'Moons'):
-    print(stmt)
+    print("\nINSERT Statements for Moons:")
+    for stmt in generate_insert_stmt(moons.reset_index(), 'Moons'):
+        print(stmt)
 
-print("\nINSERT Statements for Missions:")
-for stmt in generate_insert_stmt(missions.reset_index(), 'Missions'):
-    print(stmt)
+    print("\nINSERT Statements for Missions:")
+    for stmt in generate_insert_stmt(missions.reset_index(), 'Missions'):
+        print(stmt)
+
+
+# print statements
+print_stmts()
 
 
 # Function to generate SQL INSERT statements from DataFrame
