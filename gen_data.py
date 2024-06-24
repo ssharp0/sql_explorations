@@ -205,13 +205,11 @@ def print_select_statements():
 print_select_statements()
 
 
-# Function to get the table name
 def get_table_name():
     table_name = input("Enter the table name: ")
     return table_name
 
 
-# Function to get the table fields
 def get_fields():
     fields = []
     while True:
@@ -219,25 +217,89 @@ def get_fields():
         if field_name.lower() == 'done':
             break
         field_type = input(f"Enter the data type for {field_name}: ")
-        fields.append((field_name, field_type))
+        constraints = input(f"Enter any constraints for {field_name} (e.g., PRIMARY KEY, NOT NULL, UNIQUE) or press Enter to skip: ")
+        fields.append((field_name, field_type, constraints))
     return fields
 
 
-# Function to create the table statement
 def create_table_statement(table_name, fields):
-    field_definitions = ",\n    ".join([f"{name} {data_type}" for name, data_type in fields])
+    field_definitions = ",\n    ".join([f"{name} {data_type} {constraints}".strip() for name, data_type, constraints in fields])
     create_statement = f"CREATE TABLE {table_name} (\n    {field_definitions}\n);"
     return create_statement
 
 
-# Function to start process
 def interactive_table_creation():
     table_name = get_table_name()
     fields = get_fields()
     create_statement = create_table_statement(table_name, fields)
     print("\nSQL CREATE TABLE statement:")
     print(create_statement)
+    save_to_file = input("Would you like to save this statement to a file? (yes/no): ").lower()
+    if save_to_file == 'yes':
+        file_name = input("Enter the file name (with .sql extension): ")
+        with open(file_name, 'w') as file:
+            file.write(create_statement)
+        print(f"SQL statement saved to {file_name}")
+
+
+def validate_data_type(data_type):
+    valid_data_types = ['INT', 'VARCHAR', 'TEXT', 'DATE', 'BOOLEAN', 'FLOAT', 'DOUBLE']
+    return data_type.upper() in valid_data_types
+
+
+def get_fields_with_validation():
+    fields = []
+    while True:
+        field_name = input("Enter the field name (or type 'done' to finish): ")
+        if field_name.lower() == 'done':
+            break
+        while True:
+            field_type = input(f"Enter the data type for {field_name}: ")
+            if validate_data_type(field_type):
+                break
+            else:
+                print("Invalid data type. Please enter a valid SQL data type.")
+        constraints = input(f"Enter any constraints for {field_name} (e.g., PRIMARY KEY, NOT NULL, UNIQUE) or press Enter to skip: ")
+        fields.append((field_name, field_type, constraints))
+    return fields
+
+
+def get_foreign_keys():
+    foreign_keys = []
+    while True:
+        fk_field = input("Enter the field name for foreign key (or type 'done' to finish): ")
+        if fk_field.lower() == 'done':
+            break
+        ref_table = input(f"Enter the referenced table for {fk_field}: ")
+        ref_field = input(f"Enter the referenced field in {ref_table}: ")
+        foreign_keys.append((fk_field, ref_table, ref_field))
+    return foreign_keys
+
+
+def create_table_statement_with_fk(table_name, fields, foreign_keys):
+    field_definitions = ",\n    ".join([f"{name} {data_type} {constraints}".strip() for name, data_type, constraints in fields])
+    fk_definitions = ",\n    ".join([f"FOREIGN KEY ({fk_field}) REFERENCES {ref_table}({ref_field})" for fk_field, ref_table, ref_field in foreign_keys])
+    create_statement = f"CREATE TABLE {table_name} (\n    {field_definitions}"
+    if fk_definitions:
+        create_statement += f",\n    {fk_definitions}"
+    create_statement += "\n);"
+    return create_statement
+
+
+def interactive_table_creation_with_fk():
+    table_name = get_table_name()
+    fields = get_fields_with_validation()
+    foreign_keys = get_foreign_keys()
+    create_statement = create_table_statement_with_fk(table_name, fields, foreign_keys)
+    print("\nSQL CREATE TABLE statement:")
+    print(create_statement)
+    save_to_file = input("Would you like to save this statement to a file? (yes/no): ").lower()
+    if save_to_file == 'yes':
+        file_name = input("Enter the file name (with .sql extension): ")
+        with open(file_name, 'w') as file:
+            file.write(create_statement)
+        print(f"SQL statement saved to {file_name}")
 
 
 # Call the function to start the interactive table creation
-interactive_table_creation()
+interactive_table_creation_with_fk()
