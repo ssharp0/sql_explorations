@@ -49,3 +49,18 @@ WHERE Name = 'Proxima b I';
 -- Delete a specific mission
 DELETE FROM Missions 
 WHERE Name = 'Proxima Centauri Mission';
+
+-- Select all star systems
+SELECT * FROM StarSystems;
+
+-- Select specific columns from planets
+SELECT Name, Diameter, Mass 
+FROM Planets;
+
+-- Select all moons orbiting a specific planet
+SELECT * FROM Moons 
+WHERE PlanetID = 1;
+
+-- Select missions targeting a specific planet
+SELECT * FROM Missions 
+WHERE TargetPlanetID = 1;
