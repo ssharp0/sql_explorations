@@ -21,3 +21,31 @@ INSERT INTO Missions (Name, LaunchDate, TargetPlanetID, TargetMoonID, MissionTyp
 VALUES 
 ('Apollo 11', '1969-07-16', 1, 1, 'Lunar Landing'),
 ('Mars Rover', '2020-07-30', 2, NULL, 'Mars Exploration');
+
+-- Update the distance of Alpha Centauri
+UPDATE StarSystems 
+SET DistanceFromEarth = 4.24 
+WHERE Name = 'Alpha Centauri';
+
+-- Update the atmosphere of Proxima b
+UPDATE Planets 
+SET Atmosphere = 'Carbon Dioxide, Nitrogen' 
+WHERE Name = 'Proxima b';
+
+-- Update the distance of Alpha Centauri
+UPDATE StarSystems 
+SET DistanceFromEarth = 4.24 
+WHERE Name = 'Alpha Centauri';
+
+-- Update the atmosphere of Proxima b
+UPDATE Planets 
+SET Atmosphere = 'Carbon Dioxide, Nitrogen' 
+WHERE Name = 'Proxima b';
+
+-- Delete a specific moon
+DELETE FROM Moons 
+WHERE Name = 'Proxima b I';
+
+-- Delete a specific mission
+DELETE FROM Missions 
+WHERE Name = 'Proxima Centauri Mission';
