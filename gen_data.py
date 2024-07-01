@@ -325,3 +325,32 @@ def interactive_insert():
     insert_statement = create_insert_statement(table_name, fields, values)
     print("\nSQL INSERT statement:")
     print(insert_statement)
+
+
+# Call the function to start the interactive insert operation
+interactive_insert()
+
+
+# input update data
+def get_update_data(table_name):
+    set_clause = input(f"Enter the SET clause for {table_name} (field=value pairs, comma-separated): ").split(',')
+    where_clause = input(f"Enter the WHERE clause for {table_name}: ")
+    return set_clause, where_clause
+
+
+def create_update_statement(table_name, set_clause, where_clause):
+    set_str = ', '.join(set_clause)
+    update_statement = f"UPDATE {table_name} SET {set_str} WHERE {where_clause};"
+    return update_statement
+
+
+def interactive_update():
+    table_name = input("Enter the table name for the update operation: ")
+    set_clause, where_clause = get_update_data(table_name)
+    update_statement = create_update_statement(table_name, set_clause, where_clause)
+    print("\nSQL UPDATE statement:")
+    print(update_statement)
+
+
+# Call the function to start the interactive update operation
+interactive_update()
