@@ -303,3 +303,25 @@ def interactive_table_creation_with_fk():
 
 # Call the function to start the interactive table creation
 interactive_table_creation_with_fk()
+
+
+# input insert data
+def get_insert_data(table_name):
+    fields = input(f"Enter the fields for {table_name} (comma-separated): ").split(',')
+    values = input(f"Enter the values for {table_name} (comma-separated): ").split(',')
+    return fields, values
+
+
+def create_insert_statement(table_name, fields, values):
+    fields_str = ', '.join(fields)
+    values_str = ', '.join([f"'{value}'" for value in values])
+    insert_statement = f"INSERT INTO {table_name} ({fields_str}) VALUES ({values_str});"
+    return insert_statement
+
+
+def interactive_insert():
+    table_name = input("Enter the table name for the insert operation: ")
+    fields, values = get_insert_data(table_name)
+    insert_statement = create_insert_statement(table_name, fields, values)
+    print("\nSQL INSERT statement:")
+    print(insert_statement)
