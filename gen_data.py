@@ -354,3 +354,26 @@ def interactive_update():
 
 # Call the function to start the interactive update operation
 interactive_update()
+
+
+# input delete data
+def get_delete_data(table_name):
+    where_clause = input(f"Enter the WHERE clause for {table_name}: ")
+    return where_clause
+
+
+def create_delete_statement(table_name, where_clause):
+    delete_statement = f"DELETE FROM {table_name} WHERE {where_clause};"
+    return delete_statement
+
+
+def interactive_delete():
+    table_name = input("Enter the table name for the delete operation: ")
+    where_clause = get_delete_data(table_name)
+    delete_statement = create_delete_statement(table_name, where_clause)
+    print("\nSQL DELETE statement:")
+    print(delete_statement)
+
+
+# Call the function to start the interactive delete operation
+interactive_delete()
