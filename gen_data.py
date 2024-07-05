@@ -402,3 +402,36 @@ def interactive_batch_insert():
 
 # Call the function to start the interactive batch insert operation
 interactive_batch_insert()
+
+
+# main
+def main():
+    while True:
+        print("\nChoose an operation:")
+        print("1. Create Table")
+        print("2. Insert Data")
+        print("3. Update Data")
+        print("4. Delete Data")
+        print("5. Batch Insert from CSV")
+        print("6. Exit")
+        choice = input("Enter your choice (1-6): ")
+
+        if choice == '1':
+            interactive_table_creation_with_fk()
+        elif choice == '2':
+            interactive_insert()
+        elif choice == '3':
+            interactive_update()
+        elif choice == '4':
+            interactive_delete()
+        elif choice == '5':
+            interactive_batch_insert()
+        elif choice == '6':
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice, please try again.")
+
+
+if __name__ == "__main__":
+    main()
