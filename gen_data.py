@@ -377,3 +377,28 @@ def interactive_delete():
 
 # Call the function to start the interactive delete operation
 interactive_delete()
+
+
+# batch insert
+def batch_insert_from_csv(table_name, csv_file):
+    df = pd.read_csv(csv_file)
+    insert_statements = []
+    for row in df.itertuples(index=False):
+        fields = ', '.join(df.columns)
+        values = ', '.join([f"'{str(val)}'" for val in row])
+        insert_statement = f"INSERT INTO {table_name} ({fields}) VALUES ({values});"
+        insert_statements.append(insert_statement)
+    return insert_statements
+
+
+def interactive_batch_insert():
+    table_name = input("Enter the table name for the batch insert operation: ")
+    csv_file = input("Enter the path to the CSV file: ")
+    insert_statements = batch_insert_from_csv(table_name, csv_file)
+    print("\nBatch SQL INSERT statements:")
+    for stmt in insert_statements:
+        print(stmt)
+
+
+# Call the function to start the interactive batch insert operation
+interactive_batch_insert()
