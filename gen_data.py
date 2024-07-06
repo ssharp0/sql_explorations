@@ -151,10 +151,6 @@ def print_stmts():
         print(stmt)
 
 
-# print statements
-print_stmts()
-
-
 # Function to generate SQL INSERT statements from DataFrame
 def gen_insert_stmts(df, table_name):
     insert_statements = []
@@ -199,10 +195,6 @@ def print_select_statements():
     for table in tables:
         select_statement = generate_select_statement(table)
         print(f"SELECT statement for {table}:\n{select_statement}\n")
-
-
-# Call the function to print the SELECT statements
-print_select_statements()
 
 
 def get_table_name():
@@ -301,10 +293,6 @@ def interactive_table_creation_with_fk():
         print(f"SQL statement saved to {file_name}")
 
 
-# Call the function to start the interactive table creation
-interactive_table_creation_with_fk()
-
-
 # input insert data
 def get_insert_data(table_name):
     fields = input(f"Enter the fields for {table_name} (comma-separated): ").split(',')
@@ -325,10 +313,6 @@ def interactive_insert():
     insert_statement = create_insert_statement(table_name, fields, values)
     print("\nSQL INSERT statement:")
     print(insert_statement)
-
-
-# Call the function to start the interactive insert operation
-interactive_insert()
 
 
 # input update data
@@ -352,10 +336,6 @@ def interactive_update():
     print(update_statement)
 
 
-# Call the function to start the interactive update operation
-interactive_update()
-
-
 # input delete data
 def get_delete_data(table_name):
     where_clause = input(f"Enter the WHERE clause for {table_name}: ")
@@ -373,10 +353,6 @@ def interactive_delete():
     delete_statement = create_delete_statement(table_name, where_clause)
     print("\nSQL DELETE statement:")
     print(delete_statement)
-
-
-# Call the function to start the interactive delete operation
-interactive_delete()
 
 
 # batch insert
@@ -398,10 +374,6 @@ def interactive_batch_insert():
     print("\nBatch SQL INSERT statements:")
     for stmt in insert_statements:
         print(stmt)
-
-
-# Call the function to start the interactive batch insert operation
-interactive_batch_insert()
 
 
 # print csv as table to terminal
