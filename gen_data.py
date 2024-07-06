@@ -404,7 +404,18 @@ def interactive_batch_insert():
 interactive_batch_insert()
 
 
-# main
+# print csv as table to terminal
+def print_csv_as_table(csv_file):
+    df = pd.read_csv(csv_file)
+    print(df.to_string(index=False))
+
+
+def interactive_print_csv():
+    csv_file = input("Enter the path to the CSV file: ")
+    print("\nCSV Data in Database Format:")
+    print_csv_as_table(csv_file)
+
+
 def main():
     while True:
         print("\nChoose an operation:")
@@ -413,8 +424,9 @@ def main():
         print("3. Update Data")
         print("4. Delete Data")
         print("5. Batch Insert from CSV")
-        print("6. Exit")
-        choice = input("Enter your choice (1-6): ")
+        print("6. Print CSV as Table")
+        print("7. Exit")
+        choice = input("Enter your choice (1-7): ")
 
         if choice == '1':
             interactive_table_creation_with_fk()
@@ -427,6 +439,8 @@ def main():
         elif choice == '5':
             interactive_batch_insert()
         elif choice == '6':
+            interactive_print_csv()
+        elif choice == '7':
             print("Exiting...")
             break
         else:
