@@ -432,6 +432,51 @@ def print_aggregate_queries():
 # Call the function to print the aggregate queries
 print_aggregate_queries()
 
+def generate_subquery_examples():
+    subqueries = {
+        "Planets in Star Systems with More Than 2 Planets": """
+            SELECT Name
+            FROM Planets
+            WHERE StarSystemID IN (
+                SELECT StarSystemID
+                FROM Planets
+                GROUP BY StarSystemID
+                HAVING COUNT(*) > 2
+            );
+        """,
+        "Moons Orbiting the Largest Planet in Each Star System": """
+            SELECT Name
+            FROM Moons
+            WHERE PlanetID IN (
+                SELECT PlanetID
+                FROM Planets
+                WHERE Diameter = (
+                    SELECT MAX(Diameter)
+                    FROM Planets p
+                    WHERE p.StarSystemID = Planets.StarSystemID
+                )
+            );
+        """,
+        "Missions Targeting Planets with Moons": """
+            SELECT Name
+            FROM Missions
+            WHERE TargetPlanetID IN (
+                SELECT DISTINCT PlanetID
+                FROM Moons
+            );
+        """
+    }
+    return subqueries
+
+def print_subquery_examples():
+    subqueries = generate_subquery_examples()
+    for description, query in subqueries.items():
+        print(f"\n{description}:\n{query}")
+
+# Call the function to print the subquery examples
+print_subquery_examples()
+
+
 def main():
     while True:
         print("\nChoose an operation:")
