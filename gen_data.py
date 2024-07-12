@@ -388,6 +388,50 @@ def interactive_print_csv():
     print_csv_as_table(csv_file)
 
 
+def generate_aggregate_queries():
+    queries = {
+        "Number of Planets in Each Star System": """
+            SELECT StarSystemID, COUNT(*) AS NumberOfPlanets
+            FROM Planets
+            GROUP BY StarSystemID;
+        """,
+        "Total Diameter of All Moons": """
+            SELECT SUM(Diameter) AS TotalMoonDiameter
+            FROM Moons;
+        """,
+        "Average Mass of Planets in Each Star System": """
+            SELECT StarSystemID, AVG(Mass) AS AveragePlanetMass
+            FROM Planets
+            GROUP BY StarSystemID;
+        """,
+        "Minimum and Maximum Orbital Period of Planets": """
+            SELECT MIN(OrbitalPeriod) AS MinOrbitalPeriod, MAX(OrbitalPeriod) AS MaxOrbitalPeriod
+            FROM Planets;
+        """,
+        "Number of Missions per Planet": """
+            SELECT TargetPlanetID, COUNT(*) AS NumberOfMissions
+            FROM Missions
+            GROUP BY TargetPlanetID;
+        """,
+        "Total Distance of All Star Systems from Earth": """
+            SELECT SUM(DistanceFromEarth) AS TotalDistance
+            FROM StarSystems;
+        """,
+        "Average Distance of Star Systems from Earth": """
+            SELECT AVG(DistanceFromEarth) AS AverageDistance
+            FROM StarSystems;
+        """
+    }
+    return queries
+
+def print_aggregate_queries():
+    queries = generate_aggregate_queries()
+    for description, query in queries.items():
+        print(f"\n{description}:\n{query}")
+
+# Call the function to print the aggregate queries
+print_aggregate_queries()
+
 def main():
     while True:
         print("\nChoose an operation:")
