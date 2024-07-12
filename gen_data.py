@@ -477,6 +477,53 @@ def print_subquery_examples():
 print_subquery_examples()
 
 
+def generate_join_subquery_aggregate_examples():
+    queries = {
+        "Count Number of Planets per Star System": """
+            SELECT ss.Name AS StarSystemName, COUNT(p.PlanetID) AS NumberOfPlanets
+            FROM StarSystems ss
+            JOIN Planets p ON ss.StarSystemID = p.StarSystemID
+            GROUP BY ss.Name;
+        """,
+        "Average Diameter of Moons for Each Planet in Star Systems with More Than 2 Planets": """
+            SELECT p.Name AS PlanetName, AVG(m.Diameter) AS AverageMoonDiameter
+            FROM Planets p
+            JOIN Moons m ON p.PlanetID = m.PlanetID
+            WHERE p.StarSystemID IN (
+                SELECT StarSystemID
+                FROM Planets
+                GROUP BY StarSystemID
+                HAVING COUNT(*) > 2
+            )
+            GROUP BY p.Name;
+        """,
+        "List Missions Targeting the Largest Planet in Each Star System": """
+            SELECT m.Name AS MissionName, p.Name AS PlanetName, ss.Name AS StarSystemName
+            FROM Missions m
+            JOIN Planets p ON m.TargetPlanetID = p.PlanetID
+            JOIN StarSystems ss ON p.StarSystemID = ss.StarSystemID
+            WHERE p.PlanetID IN (
+                SELECT PlanetID
+                FROM Planets p1
+                WHERE p1.Diameter = (
+                    SELECT MAX(p2.Diameter)
+                    FROM Planets p2
+                    WHERE p2.StarSystemID = p1.StarSystemID
+                )
+            );
+        """
+    }
+    return queries
+
+def print_join_subquery_aggregate_examples():
+    queries = generate_join_subquery_aggregate_examples()
+    for description, query in queries.items():
+        print(f"\n{description}:\n{query}")
+
+# Call the function to print the join, subquery, and aggregate examples
+print_join_subquery_aggregate_examples()
+
+
 def main():
     while True:
         print("\nChoose an operation:")
