@@ -524,6 +524,52 @@ def print_join_subquery_aggregate_examples():
 print_join_subquery_aggregate_examples()
 
 
+def generate_cte_and_window_function_examples():
+    queries = {
+        "Planets with More Than 2 Moons": """
+            WITH PlanetsWithMoons AS (
+                SELECT PlanetID, COUNT(*) AS NumberOfMoons
+                FROM Moons
+                GROUP BY PlanetID
+            )
+            SELECT p.Name, pwm.NumberOfMoons
+            FROM Planets p
+            JOIN PlanetsWithMoons pwm ON p.PlanetID = pwm.PlanetID
+            WHERE pwm.NumberOfMoons > 2;
+        """,
+        "Missions Targeting Planets in Specific Star Systems": """
+            WITH PlanetsInStarSystems AS (
+                SELECT p.PlanetID, ss.Name AS StarSystemName
+                FROM Planets p
+                JOIN StarSystems ss ON p.StarSystemID = ss.StarSystemID
+                WHERE ss.Name IN ('Solar System', 'Alpha Centauri')
+            )
+            SELECT m.Name AS MissionName, pis.StarSystemName
+            FROM Missions m
+            JOIN PlanetsInStarSystems pis ON m.TargetPlanetID = pis.PlanetID;
+        """,
+        "Rank Planets by Diameter in Each Star System": """
+            SELECT p.Name, p.StarSystemID, p.Diameter,
+                   RANK() OVER (PARTITION BY p.StarSystemID ORDER BY p.Diameter DESC) AS DiameterRank
+            FROM Planets p;
+        """,
+        "Calculate Running Total of Distances for Star Systems": """
+            SELECT ss.Name, ss.DistanceFromEarth,
+                   SUM(ss.DistanceFromEarth) OVER (ORDER BY ss.DistanceFromEarth) AS RunningTotalDistance
+            FROM StarSystems ss;
+        """
+    }
+    return queries
+
+def print_cte_and_window_function_examples():
+    queries = generate_cte_and_window_function_examples()
+    for description, query in queries.items():
+        print(f"\n{description}:\n{query}")
+
+# Call the function to print the CTE and window function examples
+print_cte_and_window_function_examples()
+
+
 def main():
     while True:
         print("\nChoose an operation:")
