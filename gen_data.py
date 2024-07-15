@@ -569,6 +569,28 @@ def print_cte_and_window_function_examples():
 # Call the function to print the CTE and window function examples
 print_cte_and_window_function_examples()
 
+# Sample data
+data = [
+    ['Name', 'Diameter', 'ID'],
+    ['Earth', 3000, 1],
+    ['Saturn', 50000, 2]
+]
+
+# Initialize an empty string to hold the table
+table_str = ""
+
+# Iterate through each row in the data
+for row in data:
+    # Join the elements of the row with tabs and append a newline
+    table_str += "\t".join(row) + "\n"
+
+# Add a final newline at the end of the table
+table_str += "\n"
+
+# Write the table to a text file
+with open('table.txt', 'w') as file:
+    file.write(table_str)
+
 
 def main():
     while True:
