@@ -64,3 +64,57 @@ WHERE PlanetID = 1;
 -- Select missions targeting a specific planet
 SELECT * FROM Missions 
 WHERE TargetPlanetID = 1;
+
+-- Find planets that are larger than the average diameter of planets in their star system
+SELECT p1.Name AS PlanetName, p1.StarSystemID, p1.Diameter
+FROM Planets p1
+WHERE p1.Diameter > (
+    SELECT AVG(p2.Diameter)
+    FROM Planets p2
+    WHERE p2.StarSystemID = p1.StarSystemID
+);
+
+-- Rank planets by diameter within each star system and calculate the average diameter of the top 2 planets in each star system
+WITH RankedPlanets AS (
+    SELECT p.Name, p.StarSystemID, p.Diameter,
+           RANK() OVER (PARTITION BY p.StarSystemID ORDER BY p.Diameter DESC) AS DiameterRank
+    FROM Planets p
+)
+SELECT StarSystemID, AVG(Diameter) AS AvgTop2Diameters
+FROM RankedPlanets
+WHERE DiameterRank <= 2
+GROUP BY StarSystemID;
+
+-- Count of rows in each table
+SELECT 'StarSystems' AS TableName, COUNT(*) AS RowCount FROM StarSystems
+UNION ALL
+SELECT 'Planets', COUNT(*) FROM Planets
+UNION ALL
+SELECT 'Moons', COUNT(*) FROM Moons
+UNION ALL
+SELECT 'Missions', COUNT(*) FROM Missions;
+
+-- Identify null values in important columns
+SELECT 'Planets' AS TableName, 'Name' AS ColumnName, COUNT(*) AS NullCount
+FROM Planets WHERE Name IS NULL
+UNION ALL
+SELECT 'Planets', 'Diameter', COUNT(*) FROM Planets WHERE Diameter IS NULL
+UNION ALL
+SELECT 'Moons', 'Name', COUNT(*) FROM Moons WHERE Name IS NULL;
+
+-- Count the number of planets in each star system that have a diameter greater than 10,000 km
+SELECT StarSystemID,
+       COUNT(CASE WHEN Diameter > 10000 THEN 1 END) AS LargePlanetsCount
+FROM Planets
+GROUP BY StarSystemID;
+
+-- Calculate the number of missions launched each year
+SELECT YEAR(LaunchDate) AS LaunchYear, COUNT(*) AS MissionsCount
+FROM Missions
+GROUP BY YEAR(LaunchDate)
+ORDER BY LaunchYear;
+
+-- Generate INSERT statements dynamically based on existing table data
+SELECT CONCAT('INSERT INTO Planets (Name, StarSystemID, Diameter, Mass, OrbitalPeriod, Atmosphere) VALUES (',
+              QUOTE(Name), ', ', StarSystemID, ', ', Diameter, ', ', Mass, ', ', OrbitalPeriod, ', ', QUOTE(Atmosphere), ');') AS InsertStatement
+FROM Planets;
