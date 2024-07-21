@@ -118,3 +118,75 @@ ORDER BY LaunchYear;
 SELECT CONCAT('INSERT INTO Planets (Name, StarSystemID, Diameter, Mass, OrbitalPeriod, Atmosphere) VALUES (',
               QUOTE(Name), ', ', StarSystemID, ', ', Diameter, ', ', Mass, ', ', OrbitalPeriod, ', ', QUOTE(Atmosphere), ');') AS InsertStatement
 FROM Planets;
+
+-- Find planets that are heavier than the average mass of planets in their star system
+SELECT p1.Name AS PlanetName, p1.StarSystemID, p1.Mass
+FROM Planets p1
+WHERE p1.Mass > (
+    SELECT AVG(p2.Mass)
+    FROM Planets p2
+    WHERE p2.StarSystemID = p1.StarSystemID
+);
+
+-- Rank planets by orbital period within each star system and calculate the average orbital period of the top 3 planets in each star system
+WITH RankedPlanets AS (
+    SELECT p.Name, p.StarSystemID, p.OrbitalPeriod,
+           RANK() OVER (PARTITION BY p.StarSystemID ORDER BY p.OrbitalPeriod DESC) AS OrbitalPeriodRank
+    FROM Planets p
+)
+SELECT StarSystemID, AVG(OrbitalPeriod) AS AvgTop3OrbitalPeriods
+FROM RankedPlanets
+WHERE OrbitalPeriodRank <= 3
+GROUP BY StarSystemID;
+
+-- Count the number of distinct atmospheres and the number of planets with each atmosphere
+SELECT Atmosphere, COUNT(*) AS PlanetsCount
+FROM Planets
+GROUP BY Atmosphere;
+
+-- Identify null values in the Missions table
+SELECT 'Missions' AS TableName, 'LaunchDate' AS ColumnName, COUNT(*) AS NullCount
+FROM Missions WHERE LaunchDate IS NULL
+UNION ALL
+SELECT 'Missions', 'MissionType', COUNT(*) FROM Missions WHERE MissionType IS NULL;
+
+-- Conditional Aggregates Example
+-- Calculate the total mass of planets in each star system, but only include planets with an orbital period less than 500 days
+SELECT StarSystemID,
+       SUM(CASE WHEN OrbitalPeriod < 500 THEN Mass ELSE 0 END) AS TotalMass
+FROM Planets
+GROUP BY StarSystemID;
+
+-- Find the number of missions launched each month
+SELECT YEAR(LaunchDate) AS LaunchYear, MONTH(LaunchDate) AS LaunchMonth, COUNT(*) AS MissionsCount
+FROM Missions
+GROUP BY YEAR(LaunchDate), MONTH(LaunchDate)
+ORDER BY LaunchYear, LaunchMonth;
+
+-- Generate UPDATE statements dynamically based on existing table data
+SELECT CONCAT('UPDATE Planets SET Mass = ', Mass, ' WHERE PlanetID = ', PlanetID, ';') AS UpdateStatement
+FROM Planets;
+
+-- Calculate the average diameter of planets in each star system, and for each planet, calculate the difference from the average
+WITH AvgDiameter AS (
+    SELECT StarSystemID, AVG(Diameter) AS AvgDiameter
+    FROM Planets
+    GROUP BY StarSystemID
+)
+SELECT p.Name, p.StarSystemID, p.Diameter,
+       ad.AvgDiameter,
+       p.Diameter - ad.AvgDiameter AS DiameterDifference
+FROM Planets p
+JOIN AvgDiameter ad ON p.StarSystemID = ad.StarSystemID;
+
+-- Assume we have a hierarchical table of star systems and their subsystems
+WITH RECURSIVE StarSystemHierarchy AS (
+    SELECT StarSystemID, Name, ParentStarSystemID, 1 AS Level
+    FROM StarSystems
+    WHERE ParentStarSystemID IS NULL
+    UNION ALL
+    SELECT ss.StarSystemID, ss.Name, ss.ParentStarSystemID, sh.Level + 1
+    FROM StarSystems ss
+    INNER JOIN StarSystemHierarchy sh ON ss.ParentStarSystemID = sh.StarSystemID
+)
+SELECT * FROM StarSystemHierarchy;
