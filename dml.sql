@@ -224,3 +224,38 @@ SELECT PlanetID,
 FROM Moons
 GROUP BY PlanetID;
 
+-- Temporal Data Analysis Example
+-- Calculate the average diameter of planets launched each month
+SELECT YEAR(LaunchDate) AS LaunchYear, MONTH(LaunchDate) AS LaunchMonth, AVG(p.Diameter) AS AvgDiameter
+FROM Missions m
+JOIN Planets p ON m.TargetPlanetID = p.PlanetID
+GROUP BY YEAR(LaunchDate), MONTH(LaunchDate)
+ORDER BY LaunchYear, LaunchMonth;
+
+-- Dynamic SQL Generation Example
+-- Generate INSERT statements for the StarSystems table dynamically based on existing table data
+SELECT CONCAT('INSERT INTO StarSystems (Name, StarType, DistanceFromEarth) VALUES (',
+              QUOTE(Name), ', ', QUOTE(StarType), ', ', DistanceFromEarth, ');') AS InsertStatement
+FROM StarSystems;
+
+-- Advanced Window Functions Example
+-- Calculate the moving average of the diameter of planets within each star system
+WITH MovingAverage AS (
+    SELECT p.Name, p.StarSystemID, p.Diameter,
+           AVG(p.Diameter) OVER (PARTITION BY p.StarSystemID ORDER BY p.Diameter ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) AS MovingAvgDiameter
+    FROM Planets p
+)
+SELECT * FROM MovingAverage;
+
+-- Recursive CTE Example
+-- Find all descendant star systems of a given star system
+WITH RECURSIVE DescendantStarSystems AS (
+    SELECT StarSystemID, Name, ParentStarSystemID
+    FROM StarSystems
+    WHERE StarSystemID = 1 -- Change this to the ID of the star system you're interested in
+    UNION ALL
+    SELECT ss.StarSystemID, ss.Name, ss.ParentStarSystemID
+    FROM StarSystems ss
+    INNER JOIN DescendantStarSystems ds ON ss.ParentStarSystemID = ds.StarSystemID
+)
+SELECT * FROM DescendantStarSystems;
