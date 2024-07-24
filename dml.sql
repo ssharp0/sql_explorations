@@ -259,3 +259,47 @@ WITH RECURSIVE DescendantStarSystems AS (
     INNER JOIN DescendantStarSystems ds ON ss.ParentStarSystemID = ds.StarSystemID
 )
 SELECT * FROM DescendantStarSystems;
+
+-- Correlated Subquery Example
+-- Find planets that have more moons than the average number of moons per planet in their star system
+SELECT p1.Name AS PlanetName, p1.StarSystemID, p1.PlanetID, COUNT(m1.MoonID) AS MoonCount
+FROM Planets p1
+JOIN Moons m1 ON p1.PlanetID = m1.PlanetID
+GROUP BY p1.PlanetID
+HAVING COUNT(m1.MoonID) > (
+    SELECT AVG(MoonCount)
+    FROM (
+        SELECT COUNT(m2.MoonID) AS MoonCount
+        FROM Planets p2
+        JOIN Moons m2 ON p2.PlanetID = m2.PlanetID
+        WHERE p2.StarSystemID = p1.StarSystemID
+        GROUP BY p2.PlanetID
+    ) AS AvgMoons
+);
+
+-- Combining CTEs and Window Functions Example
+-- Calculate the median diameter of planets within each star system
+WITH OrderedPlanets AS (
+    SELECT p.Name, p.StarSystemID, p.Diameter,
+           ROW_NUMBER() OVER (PARTITION BY p.StarSystemID ORDER BY p.Diameter) AS RowAsc,
+           ROW_NUMBER() OVER (PARTITION BY p.StarSystemID ORDER BY p.Diameter DESC) AS RowDesc
+    FROM Planets p
+)
+SELECT StarSystemID, AVG(Diameter) AS MedianDiameter
+FROM OrderedPlanets
+WHERE RowAsc = RowDesc OR RowAsc + 1 = RowDesc
+GROUP BY StarSystemID;
+
+-- Data Exploration and Profiling Example
+-- Calculate the distribution of planets by atmosphere type and identify atmospheres with the highest number of planets
+SELECT Atmosphere, COUNT(*) AS PlanetCount
+FROM Planets
+GROUP BY Atmosphere
+ORDER BY PlanetCount DESC;
+
+-- Conditional Aggregates Example
+-- Calculate the total mass of planets with a diameter greater than 5,000 km but less than 15,000 km in each star system
+SELECT StarSystemID,
+       SUM(CASE WHEN Diameter > 5000 AND Diameter < 15000 THEN Mass ELSE 0 END) AS TotalMass
+FROM Planets
+GROUP BY StarSystemID;
