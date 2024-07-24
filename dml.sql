@@ -190,3 +190,37 @@ WITH RECURSIVE StarSystemHierarchy AS (
     INNER JOIN StarSystemHierarchy sh ON ss.ParentStarSystemID = sh.StarSystemID
 )
 SELECT * FROM StarSystemHierarchy;
+
+-- Correlated Subquery Example
+-- Find moons that are larger than the average diameter of moons orbiting the same planet
+SELECT m1.Name AS MoonName, m1.PlanetID, m1.Diameter
+FROM Moons m1
+WHERE m1.Diameter > (
+    SELECT AVG(m2.Diameter)
+    FROM Moons m2
+    WHERE m2.PlanetID = m1.PlanetID
+);
+
+-- Combining CTEs and Window Functions Example
+-- Calculate the cumulative sum of diameters for planets within each star system
+WITH PlanetDiameters AS (
+    SELECT p.Name, p.StarSystemID, p.Diameter,
+           SUM(p.Diameter) OVER (PARTITION BY p.StarSystemID ORDER BY p.Diameter) AS CumulativeDiameter
+    FROM Planets p
+)
+SELECT * FROM PlanetDiameters;
+
+-- Data Exploration and Profiling Example
+-- Identify columns with null values in the StarSystems table
+SELECT 'StarSystems' AS TableName, 'Name' AS ColumnName, COUNT(*) AS NullCount
+FROM StarSystems WHERE Name IS NULL
+UNION ALL
+SELECT 'StarSystems', 'StarType', COUNT(*) FROM StarSystems WHERE StarType IS NULL;
+
+-- Conditional Aggregates Example
+-- Count the number of moons for each planet that have an orbital period less than 10 days
+SELECT PlanetID,
+       COUNT(CASE WHEN OrbitalPeriod < 10 THEN 1 END) AS ShortOrbitalMoons
+FROM Moons
+GROUP BY PlanetID;
+
