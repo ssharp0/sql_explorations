@@ -303,3 +303,37 @@ SELECT StarSystemID,
        SUM(CASE WHEN Diameter > 5000 AND Diameter < 15000 THEN Mass ELSE 0 END) AS TotalMass
 FROM Planets
 GROUP BY StarSystemID;
+
+-- Temporal Data Analysis Example
+-- Find the average mass of planets targeted by missions launched in each quarter of each year
+SELECT YEAR(LaunchDate) AS LaunchYear, QUARTER(LaunchDate) AS LaunchQuarter, AVG(p.Mass) AS AvgMass
+FROM Missions m
+JOIN Planets p ON m.TargetPlanetID = p.PlanetID
+GROUP BY YEAR(LaunchDate), QUARTER(LaunchDate)
+ORDER BY LaunchYear, LaunchQuarter;
+
+-- Dynamic SQL Generation Example
+-- Generate UPDATE statements to set a default value for missing diameters in the Planets table
+SELECT CONCAT('UPDATE Planets SET Diameter = 10000 WHERE PlanetID = ', PlanetID, ' AND Diameter IS NULL;') AS UpdateStatement
+FROM Planets
+WHERE Diameter IS NULL;
+
+-- Advanced Window Functions Example
+-- Calculate the lag and lead of planet diameters within each star system to find the previous and next planet diameters
+SELECT p.Name, p.StarSystemID, p.Diameter,
+       LAG(p.Diameter) OVER (PARTITION BY p.StarSystemID ORDER BY p.Diameter) AS PrevDiameter,
+       LEAD(p.Diameter) OVER (PARTITION BY p.StarSystemID ORDER BY p.Diameter) AS NextDiameter
+FROM Planets p;
+
+-- Recursive CTE Example
+-- Find the path from a given star system to the root of the hierarchy
+WITH RECURSIVE StarSystemPath AS (
+    SELECT StarSystemID, Name, ParentStarSystemID
+    FROM StarSystems
+    WHERE StarSystemID = 5 -- Change this to the starting StarSystemID
+    UNION ALL
+    SELECT ss.StarSystemID, ss.Name, ss.ParentStarSystemID
+    FROM StarSystems ss
+    INNER JOIN StarSystemPath sp ON ss.StarSystemID = sp.ParentStarSystemID
+)
+SELECT * FROM StarSystemPath;
