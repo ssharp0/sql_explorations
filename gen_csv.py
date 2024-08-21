@@ -53,3 +53,25 @@ def generate_random_data(fields, include, range_required, values, num_rows=1000)
 def save_to_csv(data, output_file):
     data.to_csv(output_file, index=False)
     print(f"Randomized data saved to {output_file}")
+
+
+# Main function to run the script
+def main():
+    file_path = "./example_store_data.xlsx"  # Replace with your Excel file path
+    output_file = "./randomized_data.csv"
+
+    # Load and display the Excel file content
+    df = load_excel_file(file_path)
+
+    # Parse the Excel file
+    fields, include, range_required, values = parse_excel_file(df)
+
+    # Generate Randomized Data
+    data = generate_random_data(fields, include, range_required, values)
+
+    # Save to CSV
+    save_to_csv(data, output_file)
+
+
+if __name__ == "__main__":
+    main()
