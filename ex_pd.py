@@ -46,3 +46,34 @@ cols3 = ["Name", "Age", "Gender"]
 
 # np array
 d4 = np.array(d3)
+
+
+print('\n')
+print('--------DICT WITH LISTS---------')
+df1 = gen_df_from_dict_of_lists(d1)
+print(df1)
+print(f'Index: {df1.index}')
+print('--------------------------------')
+
+print('\n')
+print('---DICT WITH LISTS TRANSPOSED---')
+print(df1.T)
+print('--------------------------------')
+
+print('\n')
+print('-------LISTS WITH DICTS---------')
+df2 = gen_df_from_list_of_dicts(d2)
+print(df2)
+print('--------------------------------')
+
+print('\n')
+print('---------LIST WITH LISTS--------')
+df3 = gen_df_from_lists_of_lists(d3, cols3)
+print(df3)
+print('--------------------------------')
+
+print('\n')
+print('--------DF WITH NP ARRAY--------')
+df4 = gen_df_from_lists_of_lists(d4, cols3)
+print(df4)
+print('--------------------------------')
