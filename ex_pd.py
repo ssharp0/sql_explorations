@@ -117,3 +117,72 @@ for row in df1.itertuples():
 print('\n - Iterrows')
 for row in df1.itertuples():
     print(row)
+
+print('\n-------Using Apply-------')
+
+print('\n - Double Age Values (w/ apply()')
+df1_func1 = df1['Age'].apply(lambda x: x * 2)
+print(df1_func1)
+
+print('\n - Double Age Values + Height')
+df1_func2 = df1['Age'].apply(lambda x: x * 2) + df1["Height"]
+print(df1_func2)
+
+print('\n - Grabbing a Value')
+df1_func3 = df1['Age'][0]
+print(df1_func3)
+
+print('\n-------Setting a Value-------')
+
+print('\n - Setting a value with "loc" (label)')
+df1.loc[0, 'Age'] = 99
+print(df1)
+
+print('\n-------Filtering-------')
+
+print('\n - Using A Condition (Age > 32)')
+print(df1["Age"] > 32)
+
+print('\n - Using A Condition  (Age > 32) - Another Way')
+print(df1.loc[df1["Age"] > 32])
+
+print('\n - Using Two Conditions (Age > 32 AND/& Height > 150)')
+print(df1.loc[(df1["Age"] > 32) & (df1["Height"] > 150)])
+
+print('\n - Using Two Conditions (Age > 36 OR/| Height > 170)')
+print(df1.loc[(df1["Age"] > 36) | (df1["Height"] > 170)])
+
+print('\n-------Create New Columns-------')
+
+print('\n - Create A New Column (Age + Height)')
+df1["Age + Height"] = df1["Age"] + df1["Height"]
+print(df1)
+
+print('\n - Create A New Column Based Off Condition (Age > 33, T/F)')
+new_df = df1.copy()
+new_df["Over 33"] = new_df["Age"] > 33
+print(new_df)
+
+print('\n - Create A New Column With Value Based Off Condition (Age > 33, T="Yes", F="No"')
+new_df = df1.copy()
+new_df = (new_df["Age"] > 33).map({True: 'Yes', False: 'No'})
+print(new_df)
+
+print('\n - Create Col With List Comprehension (Age > 33, T=1, F=0)')
+new_df = df1.copy()
+new_df["Over 33"] = [int(df1.loc[i, "Age"] > 33) for i in new_df.index]
+print(new_df)
+
+print('\n - Create Column Using A For Loop (Age > 33)')
+# Create a new column using a for loop
+new_df = df1.copy()
+new_column = []
+for index, row in new_df.iterrows():
+    # print(f'i:{index} | row:{row}')
+    if row['Age'] > 33:
+        new_column.append('Older')
+    else:
+        new_column.append('Younger')
+# Add the new column to the DataFrame
+new_df['Age_Group'] = new_column
+print(new_df)
