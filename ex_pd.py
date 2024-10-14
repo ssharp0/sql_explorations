@@ -186,3 +186,15 @@ for index, row in new_df.iterrows():
 # Add the new column to the DataFrame
 new_df['Age_Group'] = new_column
 print(new_df)
+
+print('\n-------Create Category-------')
+
+print('\n - Create Category Col')
+# Create a new column using multiple conditions
+new_df = df1.copy()
+new_df['Category'] = np.select([
+    (new_df['Age'] > 60),
+    (new_df['Height'] > 160),
+    (new_df['Age'] > 30)
+], ['Senior', 'Above Avg Height', 'Adult'])
+print(new_df)
