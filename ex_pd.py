@@ -78,7 +78,7 @@ df4 = gen_df_from_lists_of_lists(d4, cols3)
 print(df4)
 print('--------------------------------')
 
-print('-------ACCESSING ELEMENTS-------')
+print('\n-------ACCESSING ELEMENTS-------')
 print(df1["Name"])
 print('----')
 print(df1[["Name", "Gender"]])
@@ -98,3 +98,22 @@ print('----')
 print(df1["Age"].describe())
 print('----')
 print(df1.sort_values(by="Age"))
+
+print('\n-------LOOPING THROUGH DATA-------')
+
+print('\n - Iterate By Column & Its Data')
+for col in df1:
+    print(f'col: {col}')
+    print(f'vals:\n {df1[col]}\n')
+
+print('\n - Iterrows')
+for idx, row in df1.iterrows():
+    print('\n', idx, row)
+
+print('\n - Iterrows')
+for row in df1.itertuples():
+    print(df1.index, row.Name)
+
+print('\n - Iterrows')
+for row in df1.itertuples():
+    print(row)
