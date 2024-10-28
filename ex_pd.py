@@ -199,3 +199,18 @@ new_df['Category'] = np.select([
 ], ['Senior', 'Above Avg Height', 'Adult'], "Uknown")
 print(new_df)
 
+
+print('\n-------Apply A Custom Function-------')
+
+
+# custom function
+def my_func(val):
+    if val > 33:
+        return 'Yes'
+    else:
+        return 'No'
+
+
+# Apply the function to the 'Age' column
+df1["Age > 33"] = df1['Age'].apply(my_func)
+print(df1)
