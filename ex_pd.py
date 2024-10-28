@@ -214,3 +214,33 @@ def my_func(val):
 # Apply the function to the 'Age' column
 df1["Age > 33"] = df1['Age'].apply(my_func)
 print(df1)
+
+
+# custom function 2
+def my_func2(row):
+    # Get values
+    name = row['Name']
+    gender = row['Gender']
+    # Convert Name to uppercase
+    name_upper = name.upper()
+    # Handle Gender condition
+    if gender == 'F':
+        gender_result = 'Female'
+    else:
+        gender_result = 'Male'
+    # Return a dictionary with the transformed values
+    return {
+        'Name': name_upper,
+        'Gender': gender_result,
+        'Age': str(row['Age']),
+    }
+
+
+# Apply the function to the DataFrame
+result_df = df1[['Name', 'Gender', 'Age']].apply(my_func2, axis=1)
+print(result_df)
+print(type(result_df))
+print(type(df1))
+# Combine the result with the original DataFrame
+final_df = pd.concat([df1, result_df], axis=1)
+print(final_df)
