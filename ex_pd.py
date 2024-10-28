@@ -132,6 +132,34 @@ print('\n - Grabbing a Value')
 df1_func3 = df1['Age'][0]
 print(df1_func3)
 
+print('\n - Double Age Values (w/ apply()')
+df1_func1 = df1['Age'].apply(lambda x: x * 2)
+print(df1_func1)
+
+print('\n - Double Age Values + Height')
+df1_func2 = df1['Age'].apply(lambda x: x * 2) + df1["Height"]
+print(df1_func2)
+
+print('\n - Grabbing a Value')
+df1_func3 = df1['Age'][0]
+print(df1_func3)
+
+print('\n - Setting a value with "loc" (label)')
+df1.loc[0, 'Age'] = 99
+print(df1)
+
+print('\n - Applying A Condition (Age > 32)')
+print(df1["Age"] > 32)
+
+print('\n - Applying Condition  (Age > 32) - Another Way')
+print(df1.loc[df1["Age"] > 32])
+
+print('\n - Applying Two Conditions (Age > 32 AND/& Height > 150)')
+print(df1.loc[(df1["Age"] > 32) & (df1["Height"] > 150)])
+
+print('\n - Applying Two Conditions (Age > 36 OR/| Height > 170)')
+print(df1.loc[(df1["Age"] > 36) | (df1["Height"] > 170)])
+
 print('\n-------Setting a Value-------')
 
 print('\n - Setting a value with "loc" (label)')
