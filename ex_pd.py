@@ -254,3 +254,55 @@ new_list = [x for x in range(5)]
 print(new_list)
 new_list = [x for x in new_list if x % 2 != 0]
 print(new_list)
+
+
+print('\n-------Working with Multi-Demensional Arrays-------')
+
+# 1D array
+print('\n')
+new_list = [None] * 7
+print(new_list)
+
+# 1D array
+one_d = [None] * 5
+print("1D array:", one_d)
+# Looping through 1D array
+for item in one_d:
+    print(item, end=" | ")
+print("\n")
+# Using enumerate for index access
+for idx, item in enumerate(one_d):
+    print(f"Index {idx}: {item}")
+print('\n')
+
+# 2D array
+two_d = [[None] * 5 for _ in range(5)]
+print("2D array:")
+for row in two_d:
+    print(row)
+# Looping through 2D array
+for i, row in enumerate(two_d):
+    for j, item in enumerate(row):
+        print(f"Row {i}, Column {j}: {item}")
+print("\nUsing nested loops")
+for i in range(5):
+    for j in range(5):
+        print(f"Row {i}, Column {j}: {two_d[i][j]}")
+print('\n')
+
+# 3D array
+three_d = [[[None] * 3 for _ in range(3)] for _ in range(3)]
+print("3D array:")
+for slice_ in three_d:
+    for row in slice_:
+        print(row)
+# Looping through 3D array
+for i, slice_ in enumerate(three_d):
+    for j, row in enumerate(slice_):
+        for k, item in enumerate(row):
+            print(f"Slice {i}, Row {j}, Column {k}: {item}")
+print("\nUsing nested loops")
+for i in range(3):
+    for j in range(3):
+        for k in range(3):
+            print(f"Slice {i}, Row {j}, Column {k}: {three_d[i][j][k]}")
