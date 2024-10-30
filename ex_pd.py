@@ -244,3 +244,13 @@ print(type(df1))
 # Combine the result with the original DataFrame
 final_df = pd.concat([df1, result_df], axis=1)
 print(final_df)
+
+
+print('\n-------List Comprhension-------')
+print('\n')
+new_list = [x * 2 for x in range(5)]
+print(new_list)
+new_list = [x for x in range(5)]
+print(new_list)
+new_list = [x for x in new_list if x % 2 != 0]
+print(new_list)
