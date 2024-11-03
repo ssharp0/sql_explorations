@@ -217,6 +217,11 @@ female_ratio = df['Gender'].value_counts()['F'] / len(df)
 print(f"\nMale ratio: {male_ratio:.2f}")
 print(f"Female ratio: {female_ratio:.2f}")
 
+print('\n-------Melt Dataframe-------')
+
+print('\n')
+melted_df = df.melt(id_vars=['Name'], var_name='Attribute', value_name='Value')
+print(melted_df)
 
 print('\n-------Apply A Custom Function-------')
 
