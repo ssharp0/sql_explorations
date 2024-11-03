@@ -223,6 +223,13 @@ print('\n')
 melted_df = df.melt(id_vars=['Name'], var_name='Attribute', value_name='Value')
 print(melted_df)
 
+print('\n-------Group By-------')
+
+print('\n')
+grouped = df.groupby('Gender')
+avg_age = grouped['Age'].mean()
+print(avg_age)
+
 print('\n-------Apply A Custom Function-------')
 
 
