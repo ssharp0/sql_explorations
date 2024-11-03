@@ -199,6 +199,24 @@ new_df['Category'] = np.select([
 ], ['Senior', 'Above Avg Height', 'Adult'], "Uknown")
 print(new_df)
 
+# age bin categories
+df = pd.DataFrame(d1)
+age_categories = pd.cut(df['Age'],
+                        bins=[0, 18, 25, 35, 45, 55, 65], 
+                        labels=['< 18', '18-24', '25-34', '35-44', '45-54', '55+']
+                        )
+df['Age Category'] = age_categories
+print(df)
+
+# gender gounts
+print('\n')
+gender_counts = df['Gender'].value_counts(normalize=True) * 100
+print(gender_counts)
+male_ratio = df['Gender'].value_counts()['M'] / len(df)
+female_ratio = df['Gender'].value_counts()['F'] / len(df)
+print(f"\nMale ratio: {male_ratio:.2f}")
+print(f"Female ratio: {female_ratio:.2f}")
+
 
 print('\n-------Apply A Custom Function-------')
 
