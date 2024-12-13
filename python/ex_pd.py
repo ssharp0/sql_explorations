@@ -202,7 +202,7 @@ print(new_df)
 # age bin categories
 df = pd.DataFrame(d1)
 age_categories = pd.cut(df['Age'],
-                        bins=[0, 18, 25, 35, 45, 55, 65], 
+                        bins=[0, 18, 25, 35, 45, 55, 65],
                         labels=['< 18', '18-24', '25-34', '35-44', '45-54', '55+']
                         )
 df['Age Category'] = age_categories
