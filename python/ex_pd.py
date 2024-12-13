@@ -336,3 +336,34 @@ for i in range(3):
     for j in range(3):
         for k in range(3):
             print(f"Slice {i}, Row {j}, Column {k}: {three_d[i][j][k]}")
+
+print('\n-------Ex ETL-------')
+
+# Extract
+data = {
+    'Name': ['Alice', 'Bob', 'Charlie'],
+    'Age': [25, 30, 35],
+    'City': ['New York', 'San Francisco', 'London']
+}
+
+# Create DataFrame
+df = pd.DataFrame(data)
+
+print("Original DataFrame:")
+print(df)
+
+# Transform
+# Add a new column 'Full Name' by concatenating 'Name' and 'Age'
+df['Full Name'] = df['Name'] + ' (' + df['Age'].astype(str) + ')'
+
+# Filter rows where Age > 28
+df_filtered = df[df['Age'] > 28]
+
+print("\nFiltered DataFrame:")
+print(df_filtered)
+
+# Load - Save the filtered DataFrame to a CSV file
+output_file = 'transformed_data.csv'
+df_filtered.to_csv(output_file, index=False)
+
+print(f"\nData saved to {output_file}")
