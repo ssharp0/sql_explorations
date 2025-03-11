@@ -97,3 +97,5 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+CALL GeneratePlanetaryData(5);  -- Generates 10 star systems with associated planets, moons, and missions
